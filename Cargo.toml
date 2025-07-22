@@ -110,3 +110,6 @@ result_large_err = "allow"
 # The following patch is added to make `ring` compatible with
 # RISC-V targets. It has no distinguishable effect on other targets.
 ring = { path = "ring", version = "=0.17.3" }
+# The following patch is to substitute the `getrandom` crate with a
+# version that instead of accessing true randomness, gives us a PRNG
+getrandom = { path = "zk-getrandom", version = "=0.1.16" }

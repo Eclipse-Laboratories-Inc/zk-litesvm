@@ -1,3 +1,6 @@
 [submodule "ring"]
 	path = ring
 	url = git@github.com:Eclipse-Laboratories-Inc/ring.git
+[submodule "zk-getrandom"]
+	path = zk-getrandom
+	url = git@github.com:Eclipse-Laboratories-Inc/zk-getrandom.git
