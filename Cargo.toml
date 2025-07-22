@@ -114,4 +114,6 @@ ring = { path = "ring", version = "=0.17.3" }
 # version that instead of accessing true randomness, gives us a PRNG
 getrandom = { path = "zk-getrandom", version = "=0.1.16" }
 # ahash pulls in `getrandom` version 0.3.3. We can use `no-rng` feature to avoid this dependency.
-ahash = { git = "https://github.com/tkaitchuck/aHash", tag = "v0.8.11", features = ["no-rng"] }
+ahash = { path = "zk-ahash", version = "=0.8.11" }
+# rand-core that does not depend on `getrandom` v2
+rand_core = { path = "zk-rand/rand_core", version = "=0.6.4" }

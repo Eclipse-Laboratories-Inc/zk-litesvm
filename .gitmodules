@@ -4,3 +4,9 @@
 [submodule "zk-getrandom"]
 	path = zk-getrandom
 	url = git@github.com:Eclipse-Laboratories-Inc/zk-getrandom.git
+[submodule "zk-ahash"]
+	path = zk-ahash
+	url = git@github.com:Eclipse-Laboratories-Inc/zk-ahash.git
+[submodule "zk-rand"]
+	path = zk-rand
+	url = git@github.com:Eclipse-Laboratories-Inc/zk-rand.git
