@@ -105,3 +105,8 @@ codegen-units = 1
 
 [workspace.lints.clippy]
 result_large_err = "allow"
+
+[patch.crates-io]
+# The following patch is added to make `ring` compatible with
+# RISC-V targets. It has no distinguishable effect on other targets.
+ring = { path = "ring", version = "=0.17.3" }
