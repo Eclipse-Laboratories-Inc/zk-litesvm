@@ -109,14 +109,21 @@ impl Default for LiteSVM {
 impl LiteSVM {
     /// Creates the basic test environment.
     pub fn new() -> Self {
-        LiteSVM::default()
+        let svm = LiteSVM::default()
             .with_builtins(None)
             .with_lamports(1_000_000u64.wrapping_mul(LAMPORTS_PER_SOL))
             .with_sysvars()
             .with_precompiles(None)
             .with_spl_programs()
             .with_sigverify(true)
-            .with_blockhash_check(true)
+            .with_blockhash_check(true);
+        if svm
+            .feature_set
+            .is_active(&solana_sdk::feature_set::bpf_account_data_direct_mapping::id())
+        {
+            panic!("BPF Account Data Direct Mapping feature must be inactive");
+        };
+        svm
     }
 
     /// Sets the compute budget.
@@ -166,6 +173,7 @@ impl LiteSVM {
     /// Changes the default builtins.
     pub fn with_builtins(mut self, feature_set: Option<FeatureSet>) -> Self {
         let mut feature_set = feature_set.unwrap_or(FeatureSet::all_enabled());
+        feature_set.deactivate(&solana_sdk::feature_set::bpf_account_data_direct_mapping::id());
 
         BUILTINS.iter().for_each(|builtint| {
             let loaded_program =
@@ -228,7 +236,8 @@ impl LiteSVM {
     }
 
     pub fn with_precompiles(mut self, feature_set: Option<FeatureSet>) -> Self {
-        let feature_set = feature_set.unwrap_or_else(FeatureSet::all_enabled);
+        let mut feature_set = feature_set.unwrap_or_else(FeatureSet::all_enabled);
+        feature_set.deactivate(&solana_sdk::feature_set::bpf_account_data_direct_mapping::id());
         load_precompiles(&mut self, feature_set);
 
         self
@@ -464,7 +473,7 @@ impl LiteSVM {
             .collect::<Vec<&u8>>();
         let fee = solana_fee::calculate_fee(
             message,
-            false,
+            // false, # This corresponds to `zero_fees_for_test` in `solana-fee@2.1.7`
             self.fee_structure.lamports_per_signature,
             0,
             self.feature_set
